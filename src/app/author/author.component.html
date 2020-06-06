@@ -1,0 +1,28 @@
+<h2>
+  {{author.name}}
+</h2>
+<div class="media">
+  <img class="mr-3" *ngIf="author.imageUrl" [src]="author.imageUrl" alt="{{author.name}}">
+  <div class="media-body">
+    <div class="row">
+      <div class="col-3"><h5 class="mt-0">Author id</h5></div>
+      <div class="col-6"><p>{{author.id}}</p></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><h5 class="mt-0">Author page</h5></div>
+      <div class="col-6"><a [href]="author.link" target="_blank">{{author.link}}</a></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><h5 class="mt-0">Average rating</h5></div>
+      <div class="col-6"><p>{{author.average_rating}}</p></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><h5 class="mt-0">Ratings count</h5></div>
+      <div class="col-6"><p>{{author.ratings_count}}</p></div>
+    </div>
+    <div class="row">
+      <div class="col-3"><h5 class="mt-0">Reviews count</h5></div>
+      <div class="col-6"><p>{{author.text_reviews_count}}</p></div>
+    </div>
+  </div>
+</div>

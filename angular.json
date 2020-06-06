@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "goodreadsFindUrl"
+    }
+  },
+  "defaultProject": "goodreadsFindUrl",
+  "cli": {
+    "analytics": false
+  }
 }

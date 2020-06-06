@@ -1,0 +1,106 @@
+<div class="my-5 mx-auto">
+  <h1 class="text-center">{{book.title}}</h1>
+  <div *ngIf="book.authors?.length">
+    <h2>
+      AUTORI
+    </h2>
+    <div *ngFor="let author of book.authors">
+      <app-author [author]="author"></app-author>
+    </div>
+  </div>
+  <div *ngIf="book.authors?.author">
+    <app-author [author]="book.authors.author"></app-author>
+  </div>
+  <h3>Description</h3>
+  <p *ngIf="book.description" [innerHTML]="book.description"></p>
+  <div class="media">
+    <img class="mr-3" *ngIf="book.imageUrl" [src]="book.imageUrl" alt="{{book.title}}">
+    <div class="media-body">
+      <div class="row">
+        <div class="col-6">
+          <div class="col-6" *ngIf="book.publisher">
+            <b>Publisher:</b> {{book.publisher}}</div>
+          <div class="col-6" *ngIf="book.publication_year">
+            <b>Publication date: </b> {{book.publication_day + '/' + book.publication_month + '/' + book.publication_year}}</div>
+          <div class="col-6" *ngIf="book.num_pages">
+            <b>Pages:</b> {{book.num_pages}}
+          </div>
+          <div class="col-6" *ngIf="book.format">
+            <b>Format:</b> {{book.format}}
+          </div>
+          <div class="col-6" *ngIf="book.is_ebook">
+            <b>Ebook:</b> {{book.is_ebook}}
+          </div>
+          <div class="col-6" *ngIf="book.language_code">
+            <b>Language:</b> {{book.language_code}}
+          </div>
+          <div class="col-6" *ngIf="book.id">
+            <b>Goodreads id:</b>
+            {{book.id}}
+          </div>
+          <div class="col-6" *ngIf="book.isbn">
+            <b>ISBN:</b>
+            {{book.isbn}}
+          </div>
+          <div class="col-6" *ngIf="book.isbn13">
+            <b>ISBN13:</b>
+            {{book.isbn13}}
+          </div>
+          <div class="col-6" *ngIf="book.asin">
+            <b>ASIN:</b> {{book.asin}}
+          </div>
+          <div class="col-6" *ngIf="book.kindle_asin">
+            <b>Kindle ASIN:</b>{{book.kindle_asin}}
+          </div>
+          <div class="col-6" *ngIf="book.average_rating">
+            <b>Average rating:</b>{{book.average_rating}}
+          </div>
+          <div class="col-6" *ngIf="book.ratings_count">
+            <b>Ratings count:</b> {{book.ratings_count}}
+          </div>
+          <div class="col-6" *ngIf="book.text_reviews_count">
+            <b>Review count:</b> {{book.text_reviews_count}}
+          </div>
+          <div class="col-6" *ngIf="book.edition_information">
+            <b>Edition info:</b> {{book.edition_information}}
+          </div>
+        </div>
+        <div class="col-6">
+          <div *ngIf="book.reviewsWidget" [innerHTML]="book.reviewsWidget"></div>
+          <div *ngIf="book.seriesWorks" [innerHTML]="book.seriesWorks"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="book.popular_shelves?.shelf?.length">
+    <div class="col-2" *ngFor="let shelf of book.popular_shelves.shelf">{{shelf.$.name +'('+shelf.$.count +')'}}</div>
+  </div>
+  <div *ngIf="book.buy_links?.buy_link" class="my-2">
+    <h3>Buy Links</h3>
+    <div class="row" *ngIf="book.buy_links.buy_link.length">
+      <div class="col-3"  *ngFor="let link of book.buy_links.buy_link">
+        <app-book-link [link]="link" [bookId]="book.id"></app-book-link>
+      </div>
+    </div>
+    <div *ngIf="book.buy_links.buy_link.link" class="my-2">
+      <app-book-link [link]="book.buy_links.buy_link" [bookId]="book.id"></app-book-link>
+    </div>
+  </div>
+  <div *ngIf="book.book_links?.book_link" class="my-2">
+    <h3>Other Links</h3>
+    <div *ngIf="book?.book_links?.book_link.length">
+      <div class="col-3"  *ngFor="let link of book.book_links.book_link">
+        <app-book-link [link]="link" [bookId]="book.id"></app-book-link>
+      </div>
+    </div>
+    <div *ngIf="book.book_links.book_link.link" class="my-2">
+      <app-book-link [link]="book.book_links.book_link" [bookId]="book.id"></app-book-link>
+    </div>
+  </div>
+  <div *ngIf="book.similar_books?.book?.length">
+    <h3>Similar books</h3>
+    <div *ngFor="let minibook of book.similar_books.book">
+      <app-book-mini [book]="minibook"></app-book-mini>
+    </div>
+  </div>
+</div>
