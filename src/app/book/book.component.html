@@ -15,9 +15,7 @@
   <p *ngIf="book.description" [innerHTML]="book.description"></p>
   <div class="media">
     <img class="mr-3" *ngIf="book.imageUrl" [src]="book.imageUrl" alt="{{book.title}}">
-    <div class="media-body">
-      <div class="row">
-        <div class="col-6">
+    <div class="media-body col-6">
           <div class="col-6" *ngIf="book.publisher">
             <b>Publisher:</b> {{book.publisher}}</div>
           <div class="col-6" *ngIf="book.publication_year">
@@ -64,16 +62,17 @@
           <div class="col-6" *ngIf="book.edition_information">
             <b>Edition info:</b> {{book.edition_information}}
           </div>
-        </div>
-        <div class="col-6">
-          <div *ngIf="book.reviewsWidget" [innerHTML]="book.reviewsWidget"></div>
-          <div *ngIf="book.seriesWorks" [innerHTML]="book.seriesWorks"></div>
-        </div>
-      </div>
+    </div>
+    <div class="col-6">
+      <div *ngIf="book.reviewsWidget && book.text_reviews_count >0" [innerHTML]="book.reviewsWidget"></div>
+      <div *ngIf="book.seriesWorks" [innerHTML]="book.seriesWorks"></div>
     </div>
   </div>
-  <div class="row" *ngIf="book.popular_shelves?.shelf?.length">
-    <div class="col-2" *ngFor="let shelf of book.popular_shelves.shelf">{{shelf.$.name +'('+shelf.$.count +')'}}</div>
+  <div class="my-2" *ngIf="book.popular_shelves?.shelf?.length">
+    <h3>Tags</h3>
+    <div class="row">
+      <div class="col-3" *ngFor="let shelf of book.popular_shelves.shelf">{{shelf.$.name +'('+shelf.$.count +')'}}</div>
+    </div>
   </div>
   <div *ngIf="book.buy_links?.buy_link" class="my-2">
     <h3>Buy Links</h3>
