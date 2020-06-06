@@ -28,6 +28,9 @@
       </a>
       </p>
   </div>
+  <div class="col-6 mx-auto my-3 alert alert-danger" *ngIf="error" role="alert">
+      Book not found
+  </div>
   <div class="row">
     <div class="col-8 mx-auto">
       <app-book *ngIf="book" [book]="book"></app-book>

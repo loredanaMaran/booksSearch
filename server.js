@@ -21,15 +21,23 @@ app.get('/book/isbn/:isbn', function (request, response) {
   https.get('https://www.goodreads.com/book/isbn_to_id/' + isbn + '?key='+config.apikey,
     (resp) => {
       console.log('statusCode:', resp.statusCode);
+      if (resp.statusCode !== 200){
+        response.status(resp.statusCode).send(resp.statusMessage)
+      }
       resp.on('data', (data) => {
-        response.status(200).send(data);
+        if (response){
+          response.status(200).send(data);
+        }
       });
-      resp.on('error', (data) => {
-        response.status(404).send(data);
+      resp.on('error', (err) => {
+        if (response){
+        response.status(404).send(err);
+        }
       })
     }).on("error", (err) => {
-    console.log("Error: " + err.message);
-    response.status(500).send(err);
+    if (response){
+      response.status(500).send(err);
+    }
   });
 });
 app.get('/book/:id', function (request, response) {

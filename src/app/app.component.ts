@@ -9,6 +9,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class AppComponent implements OnInit {
   isbnCode = '';
+  error = false;
   bookId = '';
   bookUrl: ((url: string) => string) | string = '';
   reviewUrl: ((url: string) => string) | string = '';
@@ -32,10 +33,14 @@ export class AppComponent implements OnInit {
         console.log(data);
         this.bookId = data.toString();
         this.getBookById();
+        this.error = false;
       }, error => {
         console.log(error);
+        this.bookId = '';
+        this.book = undefined;
         this.bookUrl = '';
         this.reviewUrl = '';
+        this.error = true;
       });
   }
 
@@ -64,9 +69,14 @@ export class AppComponent implements OnInit {
         this.isbnCode = this.book.isbn || this.book.isbn13 || this.book.asin || this.book.kindle_asin || '';
         this.bookUrl = this.book.link ? this.book.link : ('https://www.goodreads.com/book/show/' + this.bookId);
         this.reviewUrl = this.book.isbn ? ('https://www.goodreads.com/review/isbn/' + this.book.isbn) : this.bookUrl;
+        this.error = false;
       }, error => {
         console.log(error);
+        this.bookId = '';
+        this.book = undefined;
         this.bookUrl = '';
+        this.reviewUrl = '';
+        this.error = true;
       });
   }
 
