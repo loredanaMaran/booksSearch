@@ -1,14 +1,14 @@
 <div class="my-5 mx-auto">
   <h1 class="text-center">{{book.title}}</h1>
-  <div *ngIf="book.authors?.length">
+  <div *ngIf="book.authors?.author?.length">
     <h2>
       AUTORI
     </h2>
-    <div *ngFor="let author of book.authors">
+    <div *ngFor="let author of book.authors.author">
       <app-author [author]="author"></app-author>
     </div>
   </div>
-  <div *ngIf="book.authors?.author">
+  <div *ngIf="!book.authors?.author?.length && book.authors?.author">
     <app-author [author]="book.authors.author"></app-author>
   </div>
   <h3>Description</h3>
