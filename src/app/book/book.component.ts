@@ -15,10 +15,7 @@ export class BookComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.book){
-
-    }
-    console.log(this.book);
+    console.log(this.book.reviewsWidget);
   }
 
 }

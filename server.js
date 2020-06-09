@@ -14,13 +14,32 @@ app.use(express.static(path.join(__dirname, 'dist/goodreadsFindUrl')));
 app.listen(port,hostname, function() {
   console.log('Server listening at http://%s:%s', hostname, port);
 });
+function xmlRequesCallback (resp,response) {
+  console.log('statusCode:', resp.statusCode);
+  let data = '';
+
+  // A chunk of data has been recieved.
+  resp.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  // The whole response has been received. Print out the result.
+  resp.on('end', () => {
+    parser.parseString(data, function (err, result) {
+      if (err) {
+        console.log("Error: " + err.message);
+      } else {
+        response.status(200).send(result)
+      }
+    });
+  });
+}
 
 app.get('/book/isbn/:isbn', function (request, response) {
   const isbn = request.params.isbn;
   console.log(isbn);
   https.get('https://www.goodreads.com/book/isbn_to_id/' + isbn + '?key='+config.apikey,
     (resp) => {
-      console.log('statusCode:', resp.statusCode);
       if (resp.statusCode !== 200){
         response.status(resp.statusCode).send(resp.statusMessage)
       }
@@ -40,32 +59,31 @@ app.get('/book/isbn/:isbn', function (request, response) {
     }
   });
 });
+
+app.get('/book/search/:q', (request,response) => {
+  const q = request.params.q;
+  console.log(q)
+  https.get('https://www.goodreads.com/search/index.xml?key='+config.apikey+'&q='+q,
+    (resp) => {
+      xmlRequesCallback(resp,response);
+    }).on("error", (err) => {
+    if (response){
+      response.status(500).send(err);
+    }
+  })
+});
 app.get('/book/:id', function (request, response) {
   const id = request.params.id;
   https.get('https://www.goodreads.com/book/show/'+id+'.xml?key='+config.apikey,
     (resp) => {
-    let data = '';
-
-    // A chunk of data has been recieved.
-    resp.on('data', (chunk) => {
-      data += chunk;
-    });
-
-    // The whole response has been received. Print out the result.
-    resp.on('end', () => {
-      parser.parseString(data, function (err, result) {
-        if (err) {
-          console.log("Error: " + err.message);
-        } else {
-          response.status(200).send(result)
-        }
-      });
-    });
-
-  }).on("error", (err) => {
-    console.log("Error: " + err.message);
-  });
+      xmlRequesCallback(resp,response);
+    }).on("error", (err) => {
+    if (response){
+      response.status(500).send(err);
+    }
+  })
 });
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/goodreadsFindUrl/index.html'));
 });

@@ -7,6 +7,13 @@
         <button class="btn btn-primary mx-1" (click)="getIdByIsbn()">get book</button>
       </div>
     </div>
+  <div class="col-8 mx-auto">
+      <div class="row">
+        <input  class="form-control col-10" placeholder="Insert search" type="text" id="search-input" name="search-input"
+                [(ngModel)]="searchKey" (keyup)="$event.key === 'Enter' ? searchBook(): ''">
+        <button class="btn btn-primary mx-1" (click)="searchBook()">Search</button>
+      </div>
+    </div>
 
     <div class="col-8 mx-auto">
       <div class="row">
@@ -31,7 +38,7 @@
   <div class="col-6 mx-auto my-3 alert alert-danger" *ngIf="error" role="alert">
       Book not found
   </div>
-  <div class="row">
+  <div class="row" *ngFor="let book of books">
     <div class="col-8 mx-auto">
       <app-book *ngIf="book" [book]="book"></app-book>
     </div>

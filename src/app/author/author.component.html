@@ -4,6 +4,10 @@
 <div class="media">
   <img class="mr-3" *ngIf="author.imageUrl" [src]="author.imageUrl" alt="{{author.name}}">
   <div class="media-body">
+    <div class="row" *ngIf="author.role">
+      <div class="col-3"><h5 class="mt-0">Role</h5></div>
+      <div class="col-6"><p>{{author.role}}</p></div>
+    </div>
     <div class="row">
       <div class="col-3"><h5 class="mt-0">Author id</h5></div>
       <div class="col-6"><p>{{author.id}}</p></div>

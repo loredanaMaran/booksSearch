@@ -1,5 +1,76 @@
 <div class="my-5 mx-auto">
   <h1 class="text-center">{{book.title}}</h1>
+  <div class="media">
+    <img class="mr-3" *ngIf="book.imageUrl" [src]="book.imageUrl" alt="{{book.title}}">
+    <div class="media-body col-6">
+      <div  *ngIf="book.publisher">
+        <b>Publisher:</b> {{book.publisher}}</div>
+      <div *ngIf="book.publication_year">
+        <b>Publication date: </b> {{book.publication_day + '/' + book.publication_month + '/' + book.publication_year}}</div>
+      <div *ngIf="book.num_pages">
+        <b>Pages:</b> {{book.num_pages}}
+      </div>
+      <div  *ngIf="book.format">
+        <b>Format:</b> {{book.format}}
+      </div>
+      <div *ngIf="book.is_ebook">
+        <b>Ebook:</b> {{book.is_ebook}}
+      </div>
+      <div *ngIf="book.language_code">
+        <b>Language:</b> {{book.language_code}}
+      </div>
+      <div  *ngIf="book.id">
+        <b>Goodreads id:</b>
+        {{book.id}}
+      </div>
+      <div  *ngIf="book.isbn">
+        <b>ISBN:</b>
+        {{book.isbn}}
+      </div>
+      <div *ngIf="book.isbn13">
+        <b>ISBN13:</b>
+        {{book.isbn13}}
+      </div>
+      <div  *ngIf="book.asin">
+        <b>ASIN:</b> {{book.asin}}
+      </div>
+      <div  *ngIf="book.kindle_asin">
+        <b>Kindle ASIN: </b>{{book.kindle_asin}}
+      </div>
+      <div *ngIf="book.average_rating">
+        <b>Average rating: </b>{{book.average_rating}}
+      </div>
+      <div *ngIf="book.ratings_count">
+        <b>Ratings count:</b> {{book.ratings_count}}
+      </div>
+      <div *ngIf="book.text_reviews_count">
+        <b>Review count:</b> {{book.text_reviews_count}}
+      </div>
+      <div *ngIf="book.edition_information">
+        <b>Edition info:</b> {{book.edition_information}}
+      </div>
+    </div>
+    <div class="col-6">
+      <div *ngIf="book.reviewsWidget" [innerHTML]="book.reviewsWidget"></div>
+      <div *ngIf="book.series_works?.series_work">
+        <h3>Serie</h3>
+        <div *ngIf="book.series_works?.series_work?.series_work?.length">
+          <div *ngFor="let serie in book.series_work?.series_work">
+            <div [innerHTML]="serie.series.title"></div>
+            <div [innerHTML]="serie.series.description"></div>
+            <div [innerHTML]="serie.series.note"></div>
+          </div>
+        </div>
+        <div *ngIf="!book.series_works.series_work.length">
+          <div [innerHTML]="book.series_works.series_work.series.title"></div>
+          <div [innerHTML]="book.series_works.series_work.series.description"></div>
+          <div [innerHTML]="book.series_works.series_work.series.note"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h3 *ngIf="book.description">Description</h3>
+  <p *ngIf="book.description" [innerHTML]="book.description"></p>
   <div *ngIf="book.authors?.author?.length">
     <h2>
       AUTORI
@@ -8,71 +79,14 @@
       <app-author [author]="author"></app-author>
     </div>
   </div>
-  <div *ngIf="!book.authors?.author?.length && book.authors?.author">
-    <app-author [author]="book.authors.author"></app-author>
-  </div>
-  <h3>Description</h3>
-  <p *ngIf="book.description" [innerHTML]="book.description"></p>
-  <div class="media">
-    <img class="mr-3" *ngIf="book.imageUrl" [src]="book.imageUrl" alt="{{book.title}}">
-    <div class="media-body col-6">
-          <div class="col-6" *ngIf="book.publisher">
-            <b>Publisher:</b> {{book.publisher}}</div>
-          <div class="col-6" *ngIf="book.publication_year">
-            <b>Publication date: </b> {{book.publication_day + '/' + book.publication_month + '/' + book.publication_year}}</div>
-          <div class="col-6" *ngIf="book.num_pages">
-            <b>Pages:</b> {{book.num_pages}}
-          </div>
-          <div class="col-6" *ngIf="book.format">
-            <b>Format:</b> {{book.format}}
-          </div>
-          <div class="col-6" *ngIf="book.is_ebook">
-            <b>Ebook:</b> {{book.is_ebook}}
-          </div>
-          <div class="col-6" *ngIf="book.language_code">
-            <b>Language:</b> {{book.language_code}}
-          </div>
-          <div class="col-6" *ngIf="book.id">
-            <b>Goodreads id:</b>
-            {{book.id}}
-          </div>
-          <div class="col-6" *ngIf="book.isbn">
-            <b>ISBN:</b>
-            {{book.isbn}}
-          </div>
-          <div class="col-6" *ngIf="book.isbn13">
-            <b>ISBN13:</b>
-            {{book.isbn13}}
-          </div>
-          <div class="col-6" *ngIf="book.asin">
-            <b>ASIN:</b> {{book.asin}}
-          </div>
-          <div class="col-6" *ngIf="book.kindle_asin">
-            <b>Kindle ASIN:</b>{{book.kindle_asin}}
-          </div>
-          <div class="col-6" *ngIf="book.average_rating">
-            <b>Average rating:</b>{{book.average_rating}}
-          </div>
-          <div class="col-6" *ngIf="book.ratings_count">
-            <b>Ratings count:</b> {{book.ratings_count}}
-          </div>
-          <div class="col-6" *ngIf="book.text_reviews_count">
-            <b>Review count:</b> {{book.text_reviews_count}}
-          </div>
-          <div class="col-6" *ngIf="book.edition_information">
-            <b>Edition info:</b> {{book.edition_information}}
-          </div>
-    </div>
-    <div class="col-6">
-      <div *ngIf="book.reviewsWidget && book.text_reviews_count >0" [innerHTML]="book.reviewsWidget"></div>
-      <div *ngIf="book.seriesWorks" [innerHTML]="book.seriesWorks"></div>
-    </div>
-  </div>
   <div class="my-2" *ngIf="book.popular_shelves?.shelf?.length">
     <h3>Tags</h3>
     <div class="row">
       <div class="col-3" *ngFor="let shelf of book.popular_shelves.shelf">{{shelf.$.name +'('+shelf.$.count +')'}}</div>
     </div>
+  </div>
+  <div *ngIf="!book.authors?.author?.length && book.authors?.author">
+    <app-author [author]="book.authors.author"></app-author>
   </div>
   <div *ngIf="book.buy_links?.buy_link" class="my-2">
     <h3>Buy Links</h3>
