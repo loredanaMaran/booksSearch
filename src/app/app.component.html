@@ -7,20 +7,21 @@
         <button class="btn btn-primary mx-1" (click)="getIdByIsbn()">get book</button>
       </div>
     </div>
-  <div class="col-8 mx-auto">
-      <div class="row">
-        <input  class="form-control col-10" placeholder="Insert search" type="text" id="search-input" name="search-input"
-                [(ngModel)]="searchKey" (keyup)="$event.key === 'Enter' ? searchBook(): ''">
-        <button class="btn btn-primary mx-1" (click)="searchBook()">Search</button>
+    <div class="col-8 mx-auto">
+        <div class="row">
+          <input  class="form-control col-10" placeholder="Insert search" type="text" id="search-input" name="search-input"
+                  [(ngModel)]="searchKey" (keyup)="$event.key === 'Enter' ? searchBook(): ''">
+          <button class="btn btn-primary mx-1" (click)="searchBook()">Search</button>
+        </div>
       </div>
-    </div>
 
     <div class="col-8 mx-auto">
       <div class="row">
         <input  class="form-control col-10" placeholder="Insert goodreads id" type="text" id="id-input" name="id-input"
-                [(ngModel)]="bookId" (keyup)="$event.key === 'Enter' ? getBookById(): ''">
-        <button class="btn btn-primary mx-1" (click)="getBookById()">get book</button>
+                [(ngModel)]="bookId" (keyup)="$event.key === 'Enter' ? getBookById(bookId): ''">
+        <button class="btn btn-primary mx-1" (click)="getBookById(bookId)">get book</button>
       </div>
+      <button class="mx-auto my-3 btn btn-info" (click)="getLastSearches(); showSearch = !showSearch">Last search</button>
     </div>
     <div class="col-6 mx-auto my-3" *ngIf="bookUrl">
       <p>Goodreads url:&nbsp;&nbsp;<a href="{{bookUrl}}" target="_blank">
@@ -34,13 +35,18 @@
         {{reviewUrl}}
       </a>
       </p>
-  </div>
-  <div class="col-6 mx-auto my-3 alert alert-danger" *ngIf="error" role="alert">
-      Book not found
-  </div>
-  <div class="row" *ngFor="let book of books">
-    <div class="col-8 mx-auto">
-      <app-book *ngIf="book" [book]="book"></app-book>
     </div>
-  </div>
+    <div class="col-6 mx-auto my-3 alert alert-danger" *ngIf="error" role="alert">
+        Book not found
+    </div>
+    <div  class="col-8 mx-auto" *ngIf="showSearch">
+      <div class="row" *ngFor="let book of lastSearches">
+        <app-book-mini [book]="book" (searchById)="getBookById($event)"></app-book-mini>
+      </div>
+    </div>
+    <div class="row" *ngFor="let book of books">
+      <div class="col-8 mx-auto">
+        <app-book *ngIf="book" [book]="book" (searchById)="getBookById($event)"></app-book>
+      </div>
+    </div>
 </div>

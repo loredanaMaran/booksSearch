@@ -1,10 +1,17 @@
-<div class="my-5 mx-auto">
+<div class="my-5 mx-auto border border-dark p-3">
   <h1 class="text-center">{{book.title}}</h1>
   <div class="media">
     <img class="mr-3" *ngIf="book.imageUrl" [src]="book.imageUrl" alt="{{book.title}}">
     <div class="media-body col-6">
+      <div  *ngFor="let author of book.authors?.author">
+        <b>{{author.role || 'Author'}}:</b> {{author.name}}
+      </div>
+      <div  *ngIf="!book.authors?.author?.length && book.authors?.author">
+        <b>{{book.authors?.author.role || 'Author'}}:</b> {{book.authors?.author.name}}
+      </div>
       <div  *ngIf="book.publisher">
-        <b>Publisher:</b> {{book.publisher}}</div>
+        <b>Publisher:</b> {{book.publisher}}
+      </div>
       <div *ngIf="book.publication_year">
         <b>Publication date: </b> {{book.publication_day + '/' + book.publication_month + '/' + book.publication_year}}</div>
       <div *ngIf="book.num_pages">
@@ -22,6 +29,7 @@
       <div  *ngIf="book.id">
         <b>Goodreads id:</b>
         {{book.id}}
+        <a [href]="book.link">Go to book</a>
       </div>
       <div  *ngIf="book.isbn">
         <b>ISBN:</b>
@@ -49,6 +57,7 @@
       <div *ngIf="book.edition_information">
         <b>Edition info:</b> {{book.edition_information}}
       </div>
+      <button type="button" class="btn btn-info" (click)="searchBook(book.id)">Search book</button>
     </div>
     <div class="col-6">
       <div *ngIf="book.reviewsWidget" [innerHTML]="book.reviewsWidget"></div>
@@ -71,22 +80,22 @@
   </div>
   <h3 *ngIf="book.description">Description</h3>
   <p *ngIf="book.description" [innerHTML]="book.description"></p>
-  <div *ngIf="book.authors?.author?.length">
+  <div *ngIf="book.authors?.author?.length > 0">
     <h2>
       AUTORI
     </h2>
-    <div *ngFor="let author of book.authors.author">
+    <div class="border border-secondary" *ngFor="let author of book.authors?.author">
       <app-author [author]="author"></app-author>
     </div>
+  </div>
+  <div *ngIf="book.authors?.author && !book.authors?.author.length">
+    <app-author [author]="book.authors.author"></app-author>
   </div>
   <div class="my-2" *ngIf="book.popular_shelves?.shelf?.length">
     <h3>Tags</h3>
     <div class="row">
       <div class="col-3" *ngFor="let shelf of book.popular_shelves.shelf">{{shelf.$.name +'('+shelf.$.count +')'}}</div>
     </div>
-  </div>
-  <div *ngIf="!book.authors?.author?.length && book.authors?.author">
-    <app-author [author]="book.authors.author"></app-author>
   </div>
   <div *ngIf="book.buy_links?.buy_link" class="my-2">
     <h3>Buy Links</h3>
@@ -113,7 +122,7 @@
   <div *ngIf="book.similar_books?.book?.length">
     <h3>Similar books</h3>
     <div *ngFor="let minibook of book.similar_books.book">
-      <app-book-mini [book]="minibook"></app-book-mini>
+      <app-book-mini [book]="minibook" (searchById)="searchBook($event)"></app-book-mini>
     </div>
   </div>
 </div>

@@ -14,7 +14,8 @@ app.use(express.static(path.join(__dirname, 'dist/goodreadsFindUrl')));
 app.listen(port,hostname, function() {
   console.log('Server listening at http://%s:%s', hostname, port);
 });
-function xmlRequesCallback (resp,response) {
+const latestSearches = [];
+function xmlRequestCallback (resp,response,beforeResp) {
   console.log('statusCode:', resp.statusCode);
   let data = '';
 
@@ -29,11 +30,21 @@ function xmlRequesCallback (resp,response) {
       if (err) {
         console.log("Error: " + err.message);
       } else {
-        response.status(200).send(result)
+        if(beforeResp){
+          beforeResp(result);
+        }
+        response.status(200).send(result);
       }
     });
   });
 }
+app.get('/latestSearches',(request,response) => {
+  if (response){
+    response.status(200).send({
+      searches:latestSearches
+    });
+  }
+});
 
 app.get('/book/isbn/:isbn', function (request, response) {
   const isbn = request.params.isbn;
@@ -62,21 +73,26 @@ app.get('/book/isbn/:isbn', function (request, response) {
 
 app.get('/book/search/:q', (request,response) => {
   const q = request.params.q;
-  console.log(q)
   https.get('https://www.goodreads.com/search/index.xml?key='+config.apikey+'&q='+q,
     (resp) => {
-      xmlRequesCallback(resp,response);
+      xmlRequestCallback(resp,response);
     }).on("error", (err) => {
     if (response){
       response.status(500).send(err);
     }
   })
 });
+function addToLastSearch (result){
+    let book = result && result.GoodreadsResponse && result.GoodreadsResponse.book ? result.GoodreadsResponse.book : {};
+    if (!latestSearches.find(b => b.id === book.id))
+      latestSearches.push(book);
+
+}
 app.get('/book/:id', function (request, response) {
   const id = request.params.id;
   https.get('https://www.goodreads.com/book/show/'+id+'.xml?key='+config.apikey,
     (resp) => {
-      xmlRequesCallback(resp,response);
+      xmlRequestCallback(resp,response,addToLastSearch);
     }).on("error", (err) => {
     if (response){
       response.status(500).send(err);

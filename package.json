@@ -20,11 +20,12 @@
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
     "bootstrap": "^4.5.0",
+    "jquery": "^3.5.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "xml-js": "^1.6.11",
-    "zone.js": "~0.10.2",
-    "xml2js": "latest"
+    "xml2js": "latest",
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.7",

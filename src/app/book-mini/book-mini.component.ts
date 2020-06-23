@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-book-mini',
@@ -9,7 +9,7 @@ export class BookMiniComponent implements OnInit {
 
   constructor() { }
   @Input() book: any;
-  ngOnInit(): void {
-  }
+  @Output() searchById = new EventEmitter<string>();
+  ngOnInit(): void {}
 
 }

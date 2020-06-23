@@ -3,14 +3,12 @@
   <div class="media-body">
     <div class="row">
       <div class="col-4"><b>{{book.title}}</b></div>
-      <div *ngIf="book?.authors?.length">
-        <div class="col-4" *ngFor="let author of book.authors">
-          <a *ngIf="author.link" [href]="author.link">{{author.name}} - {{author.id}}</a>
-          <div *ngIf="!author.link">{{author.name}} - {{author.id}}</div>
-        </div>
-      </div>
+      <div class="col-4" *ngIf="book?.authors?.author?.length > 0">
+        <a *ngIf="book.authors.author[0].link" [href]="book.authors.author[0].link" target="_blank">{{book.authors.author[0].name}} - {{book.authors.author[0].id}}</a>
+        <div *ngIf="!book.authors.author[0].link">{{book.authors.author[0].name}} - {{book.authors.author[0].id}}</div>
+       </div>
       <div class="col-4" *ngIf="book?.authors?.author">
-        <a *ngIf="book.authors.author.link" [href]="book.authors.author.link">
+        <a *ngIf="book.authors.author.link" [href]="book.authors.author.link" target="_blank">
           {{book.authors.author.name}} - {{book.authors.author.id}}
         </a>
         <div *ngIf="!book.authors.author.link">{{book.authors.author.name}} - {{book.authors.author.id}}</div>
@@ -26,6 +24,8 @@
       <div class="col-4" *ngIf="book.kindle_asin">Kindle ASIN: {{book.kindle_asin}}</div>
       <div class="col-4" *ngIf="book.average_rating">Average rating: {{book.average_rating}}</div>
       <div class="col-4" *ngIf="book.ratings_count">Ratings count: {{book.ratings_count}}</div>
+      <a class="col-4" target="_blank"  [href]="'https://www.goodreads.com/book/show/' + book.id">Go to book</a>
+      <button type="button" class="btn btn-sm btn-outline-info mx-3" (click)="searchById.emit(book.id)">Search book</button>
     </div>
   </div>
 </div>

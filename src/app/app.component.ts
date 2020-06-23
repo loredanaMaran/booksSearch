@@ -10,10 +10,12 @@ import {DomSanitizer} from '@angular/platform-browser';
 export class AppComponent implements OnInit {
   isbnCode = '';
   error = false;
+  showSearch = false;
   bookId = '';
   bookUrl: ((url: string) => string) | string = '';
   reviewUrl: ((url: string) => string) | string = '';
   books = [];
+  lastSearches = [];
   searchKey: '';
   sanitizer: DomSanitizer;
   constructor(private http: HttpClient, sanitizer: DomSanitizer) {
@@ -37,6 +39,16 @@ export class AppComponent implements OnInit {
     this.searchKey = '';
   }
 
+  getLastSearches(){
+    if (!this.showSearch){
+      this.http.get('/latestSearches').subscribe((data: any) => {
+        console.log(data);
+        this.lastSearches = data.searches;
+      }, error => {
+        console.log(error);
+      });
+    }
+  }
   getIdByIsbn(){
     this.books = [];
     console.log(this.isbnCode);
@@ -44,7 +56,7 @@ export class AppComponent implements OnInit {
       .subscribe(data => {
         console.log(data);
         this.bookId = data.toString();
-        this.getBookById();
+        this.getBookById(this.bookId);
         this.error = false;
       }, error => {
         console.log(error);
@@ -71,7 +83,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  getBookById(){
+  getBookById(bookId){
+    if (this.bookId !== bookId){
+      this.bookId = bookId;
+    }
     this.books = [];
     this.http.get('/book/' + this.bookId)
       .subscribe((data: any) => {
@@ -80,7 +95,8 @@ export class AppComponent implements OnInit {
         this.sanitizeUrls();
         this.books.forEach(book => {
           this.isbnCode = book.isbn || book.isbn13 || book.asin || book.kindle_asin || '';
-          this.bookUrl = book.link ? book.link : ('https://www.goodreads.com/book/show/' + this.bookId);
+          book.link = book.link ? book.link : ('https://www.goodreads.com/book/show/' + this.bookId);
+          this.bookUrl = book.link;
           this.reviewUrl = book.isbn ? ('https://www.goodreads.com/review/isbn/' + book.isbn) : this.bookUrl;
         });
         this.error = false;
@@ -114,6 +130,7 @@ export class AppComponent implements OnInit {
               book.image_url = item.best_book.image_url;
               book.ratings_count = item.ratings_count._;
               book.text_reviews_count = item.text_reviews_count._;
+              book.link = 'https://www.goodreads.com/book/show/' + book.id;
               this.books.push(book);
             });
             this.sanitizeUrls();
@@ -121,7 +138,7 @@ export class AppComponent implements OnInit {
           } else {
             if (data?.GoodreadsResponse?.search?.results?.work?.best_book?.id?._){
               this.bookId = data?.GoodreadsResponse?.search?.results?.work?.best_book?.id?._;
-              this.getBookById();
+              this.getBookById(this.bookId);
             }
           }
         } else {
