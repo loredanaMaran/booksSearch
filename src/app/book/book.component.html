@@ -41,6 +41,7 @@
       </div>
       <div  *ngIf="book.asin">
         <b>ASIN:</b> {{book.asin}}
+        <b><a target="_blank"  *ngIf="book.asin" [href]="'https://www.amazon.it/dp/' + book.asin">Amazon</a></b>
       </div>
       <div  *ngIf="book.kindle_asin">
         <b>Kindle ASIN: </b>{{book.kindle_asin}}

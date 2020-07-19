@@ -25,6 +25,7 @@
       <div class="col-4" *ngIf="book.average_rating">Average rating: {{book.average_rating}}</div>
       <div class="col-4" *ngIf="book.ratings_count">Ratings count: {{book.ratings_count}}</div>
       <a class="col-4" target="_blank"  [href]="'https://www.goodreads.com/book/show/' + book.id">Go to book</a>
+      <a class="col-4" target="_blank"  *ngIf="book.asin" [href]="'https://www.amazon.it/dp/' + book.asin">Amazon</a>
       <button type="button" class="btn btn-sm btn-outline-info mx-3" (click)="searchById.emit(book.id)">Search book</button>
     </div>
   </div>
